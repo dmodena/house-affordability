@@ -14,7 +14,7 @@ INCOME_SHEET = "Total, weekly"
 START_YEAR = 2002
 END_YEAR = 2024
 
-DROP_AREAS = {"City of London"}  # set() if you want to keep it
+DROP_AREAS = {"City of London"}  
 
 
 # ============================
@@ -146,14 +146,14 @@ merged_long = merged[[
 ]].sort_values(["Area", "year"]).copy()
 
 # ============================
-# 4) WIDE VIEWS (compact)
+# 4) WIDE VIEWS 
 # ============================
 ratio_wide = merged_long.pivot(index="year", columns="Area", values="price_to_income_ratio").sort_index()
 price_wide = merged_long.pivot(index="year", columns="Area", values="house_price").sort_index()
 income_wide = merged_long.pivot(index="year", columns="Area", values="annual_income").sort_index()
 
 # ============================
-# 5) SAVE (multi-sheet Excel)
+# 5) SAVE 
 # ============================
 with pd.ExcelWriter(OUT_FILE, engine="xlsxwriter") as writer:
     merged_long.to_excel(writer, index=False, sheet_name="merged_annual_long")
