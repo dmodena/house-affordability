@@ -1,0 +1,77 @@
+<section class="borough-map-section">
+  <div class="map-container">
+    <h2 class="map-title">The Great Shift</h2>
+    <p class="map-subtitle">Watch how London's housing prices have transformed over three decades</p>
+    
+    <div class="map-visualization">
+      <svg viewBox="0 0 400 300" class="london-map">
+        <!-- Simplified London boroughs -->
+        @for (borough of boroughs(); track borough.name) {
+          <g class="borough-group">
+            <path
+              [attr.d]="getBoroughPath(borough.name)"
+              [attr.fill]="borough.color"
+              stroke="#ffffff"
+              stroke-width="2"
+              class="borough-path"
+            />
+            <text
+              [attr.x]="getBoroughPosition(borough.name).x"
+              [attr.y]="getBoroughPosition(borough.name).y"
+              text-anchor="middle"
+              dominant-baseline="middle"
+              class="borough-label"
+            >
+              {{ borough.name.split(' ')[0] }}
+            </text>
+          </g>
+        }
+      </svg>
+    </div>
+
+    <div class="year-control">
+      <label for="year-slider" class="year-label">
+        Year: <span class="year-display">{{ yearDisplay() }}</span>
+      </label>
+      <input
+        id="year-slider"
+        type="range"
+        min="{{ minYear }}"
+        max="{{ maxYear }}"
+        [value]="selectedYear()"
+        (input)="onYearChange($event)"
+        class="year-slider"
+      />
+      <div class="year-range">
+        <span>2000</span>
+        <span>2030</span>
+      </div>
+    </div>
+
+    <div class="legend">
+      <div class="legend-title">Price Range</div>
+      <div class="legend-items">
+        <div class="legend-item">
+          <div class="legend-color" style="background-color: #10b981;"></div>
+          <span>&lt; £300k</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color" style="background-color: #eab308;"></div>
+          <span>£300k-600k</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color" style="background-color: #f97316;"></div>
+          <span>£600k-900k</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color" style="background-color: #ef4444;"></div>
+          <span>£900k-1.2M</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color" style="background-color: #991b1b;"></div>
+          <span>&gt; £1.2M</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
