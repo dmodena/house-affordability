@@ -1,0 +1,111 @@
+<section class="calculator-section">
+  <div class="calculator-container">
+    <h2 class="calculator-title">House Affordability Calculator</h2>
+    <p class="calculator-subtitle">Find out how long it will take to buy your dream home</p>
+    
+    <form [formGroup]="calculatorForm" (ngSubmit)="calculate()" class="calculator-form">
+      <div class="form-group">
+        <label for="salary" class="form-label fw-bold">Monthly salary:</label>
+        <input 
+          type="number" 
+          id="salary" 
+          formControlName="salary"
+          class="form-control" 
+          placeholder="Enter your monthly salary"
+          aria-describedby="salary-error"
+        />
+        @if (calculatorForm.get('salary')?.touched && calculatorForm.get('salary')?.invalid) {
+          <small id="salary-error" class="error-message">
+            @if (calculatorForm.get('salary')?.hasError('required')) {
+              Monthly salary is required
+            } @else if (calculatorForm.get('salary')?.hasError('min')) {
+              Salary must be a positive number
+            }
+          </small>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="age" class="form-label fw-bold">Age:</label>
+        <input 
+          type="number" 
+          id="age" 
+          formControlName="age"
+          class="form-control" 
+          placeholder="Enter your age"
+          aria-describedby="age-error"
+        />
+        @if (calculatorForm.get('age')?.touched && calculatorForm.get('age')?.invalid) {
+          <small id="age-error" class="error-message">
+            @if (calculatorForm.get('age')?.hasError('required')) {
+              Age is required
+            } @else if (calculatorForm.get('age')?.hasError('min')) {
+              You must be at least 18 years old
+            } @else if (calculatorForm.get('age')?.hasError('max')) {
+              Age must be less than 100
+            }
+          </small>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="price" class="form-label fw-bold">Cost of the property:</label>
+        <input 
+          type="number" 
+          id="price" 
+          formControlName="price"
+          class="form-control" 
+          placeholder="Enter property cost"
+          aria-describedby="price-error"
+        />
+        @if (calculatorForm.get('price')?.touched && calculatorForm.get('price')?.invalid) {
+          <small id="price-error" class="error-message">
+            @if (calculatorForm.get('price')?.hasError('required')) {
+              Property cost is required
+            } @else if (calculatorForm.get('price')?.hasError('min')) {
+              Property cost must be a positive number
+            }
+          </small>
+        }
+      </div>
+
+      <button 
+        type="submit" 
+        class="btn btn-success calculator-button" 
+        [disabled]="isCalculating()"
+      >
+        @if (isCalculating()) {
+          <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+          Calculating...
+        } @else {
+          Calculate
+        }
+      </button>
+    </form>
+
+    @if (advice()) {
+      <div class="advice-message" role="status" aria-live="polite">
+        {{ advice() }}
+      </div>
+    }
+
+    @if (result(); as result) {
+      <div class="result-container">
+        <div class="result-message {{ getResultClass() }}" role="alert">
+          {{ result.message }}
+        </div>
+        
+        <div class="result-details">
+          <div class="detail-item">
+            <span class="detail-label">Time to purchase:</span>
+            <span class="detail-value">{{ result.years }} years and {{ result.months }} months</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Age at purchase:</span>
+            <span class="detail-value">{{ result.totalAge }} years old</span>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</section>

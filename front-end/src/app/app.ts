@@ -3,6 +3,7 @@ import { HeroComponent } from './components/hero/hero.component';
 import { BoroughMapComponent } from './components/borough-map/borough-map.component';
 import { IncomeChartComponent } from './components/income-chart/income-chart.component';
 import { AffordabilityTimelineComponent } from './components/affordability-timeline/affordability-timeline.component';
+import { CalculatorComponent } from './components/calculator/calculator.component';
 import { SolutionsComponent } from './components/solutions/solutions.component';
 
 @Component({
@@ -12,6 +13,7 @@ import { SolutionsComponent } from './components/solutions/solutions.component';
     BoroughMapComponent,
     IncomeChartComponent,
     AffordabilityTimelineComponent,
+    CalculatorComponent,
     SolutionsComponent
   ],
   templateUrl: './app.html',
