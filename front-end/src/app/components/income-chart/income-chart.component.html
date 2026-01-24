@@ -1,197 +1,39 @@
 <section class="income-chart-section">
-  <div class="chart-container">
-    <h2 class="chart-title">The Gap</h2>
-    <p class="chart-subtitle">The widening chasm between family income and house prices</p>
-    
-    <div class="chart-wrapper">
-      <svg [attr.width]="chartWidth" [attr.height]="chartHeight" class="chart">
-        <!-- Grid lines -->
-        <g class="grid">
-          <!-- Horizontal grid lines -->
-          @for (i of [0, 1, 2, 3, 4, 5]; track i) {
-            <line
-              [attr.x1]="padding"
-              [attr.y1]="padding + (i * (chartHeight - 2 * padding) / 5)"
-              [attr.x2]="chartWidth - padding"
-              [attr.y2]="padding + (i * (chartHeight - 2 * padding) / 5)"
-              stroke="rgba(255, 255, 255, 0.1)"
-              stroke-dasharray="2,2"
-            />
-          }
-          
-          <!-- Vertical grid lines -->
-          @for (year of [2000, 2005, 2010, 2015, 2020, 2025, 2030]; track year) {
-            <line
-              [attr.x1]="getScaledX(year)"
-              [attr.y1]="padding"
-              [attr.x2]="getScaledX(year)"
-              [attr.y2]="chartHeight - padding"
-              stroke="rgba(255, 255, 255, 0.1)"
-              stroke-dasharray="2,2"
-            />
-          }
-        </g>
+  <div class="wrap">
+    <h1>House Price vs Income (Annual)</h1>
 
-        <!-- Axes -->
-        <g class="axes">
-          <!-- X-axis -->
-          <line
-            [attr.x1]="padding"
-            [attr.y1]="chartHeight - padding"
-            [attr.x2]="chartWidth - padding"
-            [attr.y2]="chartHeight - padding"
-            stroke="rgba(255, 255, 255, 0.5)"
-            stroke-width="2"
-          />
-          
-          <!-- Y-axis -->
-          <line
-            [attr.x1]="padding"
-            [attr.y1]="padding"
-            [attr.x2]="padding"
-            [attr.y2]="chartHeight - padding"
-            stroke="rgba(255, 255, 255, 0.5)"
-            stroke-width="2"
-          />
-        </g>
+    <div class="controls">
+      <label for="boroughInput">Borough</label>
+      <input
+        id="boroughInput"
+        list="boroughs"
+        placeholder="Start typing (e.g., Barnet)..."
+        [(ngModel)]="selectedBorough"
+        (keydown.enter)="loadBoroughData()"
+      />
+      <datalist id="boroughs">
+        @for (borough of availableBoroughs(); track borough) {
+          <option [value]="borough"></option>
+        }
+      </datalist>
 
-        <!-- Historical data lines -->
-        <g class="data-lines">
-          <!-- Income line (historical) -->
-          <path
-            [attr.d]="historicalIncomePath()"
-            fill="none"
-            stroke="#10b981"
-            stroke-width="3"
-          />
-          
-          <!-- Price line (historical) -->
-          <path
-            [attr.d]="historicalPricePath()"
-            fill="none"
-            stroke="#ef4444"
-            stroke-width="3"
-          />
-        </g>
-
-        <!-- Projection lines (dashed) -->
-        <g class="projection-lines">
-          <!-- Income line (projection) -->
-          <path
-            [attr.d]="projectionIncomePath()"
-            fill="none"
-            stroke="#10b981"
-            stroke-width="3"
-            stroke-dasharray="8,4"
-            opacity="0.7"
-          />
-          
-          <!-- Price line (projection) -->
-          <path
-            [attr.d]="projectionPricePath()"
-            fill="none"
-            stroke="#ef4444"
-            stroke-width="3"
-            stroke-dasharray="8,4"
-            opacity="0.7"
-          />
-        </g>
-
-        <!-- Data points -->
-        <g class="data-points">
-          @for (point of chartData(); track point.year) {
-            @if (!point.isProjection) {
-              <!-- Income point -->
-              <circle
-                [attr.cx]="getScaledX(point.year)"
-                [attr.cy]="getScaledY(point.income, maxIncome())"
-                r="4"
-                fill="#10b981"
-                stroke="white"
-                stroke-width="2"
-              />
-              
-              <!-- Price point -->
-              <circle
-                [attr.cx]="getScaledX(point.year)"
-                [attr.cy]="getScaledY(point.price, maxPrice())"
-                r="4"
-                fill="#ef4444"
-                stroke="white"
-                stroke-width="2"
-              />
-            }
-          }
-        </g>
-
-        <!-- X-axis labels -->
-        <g class="x-labels">
-          @for (year of [2000, 2005, 2010, 2015, 2020, 2025, 2030]; track year) {
-            <text
-              [attr.x]="getScaledX(year)"
-              [attr.y]="chartHeight - padding + 20"
-              text-anchor="middle"
-              fill="white"
-              font-size="12"
-            >
-              {{ year }}
-              @if (year >= 2025) {
-                <tspan font-size="10" opacity="0.7">(Proj)</tspan>
-              }
-            </text>
-          }
-        </g>
-
-        <!-- Y-axis labels (left - Income) -->
-        <g class="y-labels-left">
-          @for (i of [0, 1, 2, 3, 4, 5]; track i) {
-            <text
-              [attr.x]="padding - 10"
-              [attr.y]="padding + (i * (chartHeight - 2 * padding) / 5) + 4"
-              text-anchor="end"
-              fill="#10b981"
-              font-size="12"
-            >
-              {{ formatCurrency(maxIncome() * (1 - i / 5)) }}
-            </text>
-          }
-        </g>
-
-        <!-- Y-axis labels (right - Prices) -->
-        <g class="y-labels-right">
-          @for (i of [0, 1, 2, 3, 4, 5]; track i) {
-            <text
-              [attr.x]="chartWidth - padding + 10"
-              [attr.y]="padding + (i * (chartHeight - 2 * padding) / 5) + 4"
-              text-anchor="start"
-              fill="#ef4444"
-              font-size="12"
-            >
-              {{ formatCurrency(maxPrice() * (1 - i / 5)) }}
-            </text>
-          }
-        </g>
-      </svg>
+      <button (click)="loadBoroughData()">Load</button>
+      <span id="status">{{ status() }}</span>
     </div>
 
-    <div class="chart-legend">
-      <div class="legend-item">
-        <div class="legend-line income"></div>
-        <span>Family Income</span>
-      </div>
-      <div class="legend-item">
-        <div class="legend-line price"></div>
-        <span>House Prices</span>
-      </div>
-      <div class="legend-item projection">
-        <div class="legend-line projection"></div>
-        <span>Projections (2025-2030)</span>
-      </div>
+    <div class="card">
+      <canvas #chart height="120"></canvas>
     </div>
 
-    <div class="key-insight">
-      <div class="insight-number">{{ affordabilityRatio() }}x</div>
-      <div class="insight-text">By 2030, London homes will cost over {{ affordabilityRatio() }} times the average family income</div>
+    <div class="insight">
+      <div><b>Selected years:</b> <span id="yearRange">{{ yearRangeDisplay() }}</span></div>
+      <div id="insightText">{{ insightText() }}</div>
+      <button id="resetRangeBtn" type="button" (click)="resetSelection()">Reset selection</button>
     </div>
+
+    <p class="hint">
+      Two lines: <b>house price</b> and <b>annual income</b> for the selected
+      borough. (Different scales are expected—income is much smaller.)
+    </p>
   </div>
 </section>
