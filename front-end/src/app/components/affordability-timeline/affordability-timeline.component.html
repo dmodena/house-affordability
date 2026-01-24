@@ -1,70 +1,8 @@
-<section class="timeline-section">
-  <div class="timeline-container">
-    <h2 class="timeline-title">The Breaking Point</h2>
-    <p class="timeline-subtitle">Key moments that shaped London's housing affordability crisis</p>
-    
-    <div class="timeline-wrapper">
-      <!-- Timeline line -->
-      <div class="timeline-line">
-        <div class="timeline-progress"></div>
-      </div>
-      
-      <!-- Timeline events -->
-      <div class="timeline-events">
-        @for (event of timelineEvents(); track event.year) {
-          <div 
-            class="timeline-event"
-            [style.left.%]="getEventPosition(event.year)"
-          >
-            <!-- Event dot -->
-            <div 
-              class="event-dot"
-              [style.background-color]="getImpactColor(event.impact)"
-              [style.width.px]="getImpactSize(event.impact)"
-              [style.height.px]="getImpactSize(event.impact)"
-            ></div>
-            
-            <!-- Event content -->
-            <div class="event-content">
-              <div class="event-year">{{ event.year }}</div>
-              <div class="event-title">{{ event.title }}</div>
-              <div class="event-description">{{ event.description }}</div>
-              <div class="event-impact" [style.color]="getImpactColor(event.impact)">
-                {{ event.impact.toUpperCase() }} IMPACT
-              </div>
-            </div>
-          </div>
-        }
-      </div>
-      
-      <!-- Year markers -->
-      <div class="year-markers">
-        @for (year of [2000, 2005, 2010, 2015, 2020, 2025, 2030]; track year) {
-          <div 
-            class="year-marker"
-            [style.left.%]="getEventPosition(year)"
-          >
-            <div class="year-line"></div>
-            <div class="year-label">{{ year }}</div>
-          </div>
-        }
-      </div>
-    </div>
-
-    <!-- Key statistics -->
-    <div class="timeline-stats">
-      <div class="stat-card">
-        <div class="stat-number">2000</div>
-        <div class="stat-label">Housing was 6x average income</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-number">2025</div>
-        <div class="stat-label">Housing is 15x average income</div>
-      </div>
-      <div class="stat-card critical">
-        <div class="stat-number">+150%</div>
-        <div class="stat-label">Increase in affordability gap</div>
-      </div>
+<section class="reasons-section">
+  <div class="reasons-container">
+    <div class="gif-container">
+      <img src="/reasons-solutions/Reasons_1.gif" alt="Reasons 1" class="gif-image" />
+      <img src="/reasons-solutions/Reasons_2.gif" alt="Reasons 2" class="gif-image" />
     </div>
   </div>
 </section>
