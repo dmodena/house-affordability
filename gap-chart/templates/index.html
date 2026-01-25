@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>House vs Income Gap</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <div class="wrap">
+      <h1>House Price vs Income (Annual)</h1>
+
+      <div class="controls">
+        <label for="boroughInput">Borough</label>
+        <input
+          id="boroughInput"
+          list="boroughs"
+          placeholder="Start typing (e.g., Barnet)..."
+        />
+        <datalist id="boroughs">
+          {% for b in boroughs %}
+          <option value="{{ b }}"></option>
+          {% endfor %}
+        </datalist>
+
+        <button id="loadBtn">Load</button>
+        <span id="status"></span>
+      </div>
+
+      <div class="card">
+        <canvas id="chart" height="120"></canvas>
+      </div>
+
+      <div class="insight">
+        <div><b>Selected years:</b> <span id="yearRange">None</span></div>
+        <div id="insightText">Click two years on the chart to compare.</div>
+        <button id="resetRangeBtn" type="button">Reset selection</button>
+      </div>
+
+      <p class="hint">
+        Two lines: <b>house price</b> and <b>annual income</b> for the selected
+        borough. (Different scales are expected—income is much smaller.)
+      </p>
+    </div>
+
+    <script src="/static/app.js"></script>
+  </body>
+</html>

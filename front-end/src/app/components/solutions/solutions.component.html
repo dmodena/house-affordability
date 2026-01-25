@@ -1,0 +1,63 @@
+<section class="solutions-section">
+  <div class="solutions-container">
+    <h2 class="solutions-title">The Blueprint</h2>
+    <p class="solutions-subtitle">Strategic approaches to restore housing affordability in London</p>
+    
+    <div class="solutions-grid">
+      @for (solution of solutions; track solution.title) {
+        <div class="solution-card">
+          <div class="solution-icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path 
+                [attr.d]="getIconPath(solution.icon)" 
+                stroke="currentColor" 
+                stroke-width="2" 
+                stroke-linecap="round" 
+                stroke-linejoin="round"
+              />
+            </svg>
+          </div>
+          
+          <div class="solution-content">
+            <h3 class="solution-title">{{ solution.title }}</h3>
+            <p class="solution-description">{{ solution.description }}</p>
+            
+            <div class="solution-meta">
+              <div class="solution-impact">
+                <span class="meta-label">Impact:</span>
+                <span class="meta-value impact-{{ solution.impact.toLowerCase() }}">{{ solution.impact }}</span>
+              </div>
+              <div class="solution-timeline">
+                <span class="meta-label">Timeline:</span>
+                <span class="meta-value">{{ solution.timeline }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+
+    <div class="call-to-action">
+      <h3 class="cta-title">The Time to Act is Now</h3>
+      <p class="cta-description">
+        London's housing affordability crisis requires immediate, coordinated action from policymakers, 
+        developers, and communities. Together, we can build a city where everyone has access to safe, 
+        affordable housing.
+      </p>
+      <div class="cta-stats">
+        <div class="cta-stat">
+          <div class="stat-number">2M+</div>
+          <div class="stat-label">Londoners affected</div>
+        </div>
+        <div class="cta-stat">
+          <div class="stat-number">£500B</div>
+          <div class="stat-label">Investment needed</div>
+        </div>
+        <div class="cta-stat">
+          <div class="stat-number">2030</div>
+          <div class="stat-label">Target for change</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

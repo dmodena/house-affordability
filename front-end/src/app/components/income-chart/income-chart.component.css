@@ -1,0 +1,159 @@
+:host {
+  display: block;
+  width: 100%;
+  height: 100vh;
+}
+
+.income-chart-section {
+  width: 100%;
+  height: 100vh;
+  background-color: #1a2b3c;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.chart-container {
+  max-width: 900px;
+  width: 100%;
+  text-align: center;
+}
+
+.chart-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 1rem;
+}
+
+.chart-subtitle {
+  font-size: 1.125rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.chart-wrapper {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow-x: auto;
+}
+
+.chart {
+  max-width: 100%;
+  height: auto;
+}
+
+.data-lines path,
+.projection-lines path {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.data-points circle {
+  transition: all 0.2s ease;
+}
+
+.data-points circle:hover {
+  r: 6;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+}
+
+.chart-legend {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.legend-item.projection {
+  opacity: 0.8;
+}
+
+.legend-line {
+  width: 24px;
+  height: 3px;
+  border-radius: 2px;
+}
+
+.legend-line.income {
+  background-color: #10b981;
+}
+
+.legend-line.price {
+  background-color: #ef4444;
+}
+
+.legend-line.projection {
+  background-color: #64748b;
+  background-image: repeating-linear-gradient(
+    90deg,
+    #64748b,
+    #64748b 8px,
+    transparent 8px,
+    transparent 12px
+  );
+}
+
+.key-insight {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(16, 185, 129, 0.2));
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.insight-number {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #ef4444;
+  margin-bottom: 0.5rem;
+}
+
+.insight-text {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  .chart-title {
+    font-size: 2rem;
+  }
+  
+  .chart-subtitle {
+    font-size: 1rem;
+  }
+  
+  .chart-wrapper {
+    padding: 1rem;
+  }
+  
+  .chart-legend {
+    gap: 1rem;
+  }
+  
+  .legend-item {
+    font-size: 0.75rem;
+  }
+  
+  .insight-number {
+    font-size: 2.5rem;
+  }
+  
+  .insight-text {
+    font-size: 0.875rem;
+  }
+}
