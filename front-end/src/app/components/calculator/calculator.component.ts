@@ -14,7 +14,6 @@ export interface CalculationResult {
   selector: 'app-calculator',
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './calculator.component.html',
-  styleUrl: './calculator.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CalculatorComponent {
@@ -29,6 +28,62 @@ export class CalculatorComponent {
   isCalculating = signal(false);
   result = signal<CalculationResult | null>(null);
   advice = signal('');
+
+  // Format number with space separators for hundreds
+  formatNumberWithSpaces(value: string): string {
+    if (!value) return '';
+    
+    // Remove all non-digit characters
+    const cleanValue = value.replace(/\D/g, '');
+    
+    if (cleanValue === '') return '';
+    
+    // Add space separators every 3 digits from the right
+    return cleanValue.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+  }
+
+  // Parse formatted number back to clean number
+  parseFormattedNumber(formattedValue: string): string {
+    return formattedValue.replace(/\s/g, '');
+  }
+
+  // Handle input formatting for salary
+  onSalaryInput(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const formattedValue = this.formatNumberWithSpaces(input.value);
+    const cleanValue = this.parseFormattedNumber(formattedValue);
+    
+    // Update the visual display
+    input.value = formattedValue;
+    
+    // Update the form control with clean value
+    this.calculatorForm.patchValue({ salary: cleanValue });
+  }
+
+  // Handle input formatting for price
+  onPriceInput(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const formattedValue = this.formatNumberWithSpaces(input.value);
+    const cleanValue = this.parseFormattedNumber(formattedValue);
+    
+    // Update the visual display
+    input.value = formattedValue;
+    
+    // Update the form control with clean value
+    this.calculatorForm.patchValue({ price: cleanValue });
+  }
+
+  // Get formatted display value for salary
+  getFormattedSalary(): string {
+    const salary = this.calculatorForm.get('salary')?.value;
+    return salary ? this.formatNumberWithSpaces(salary.toString()) : '';
+  }
+
+  // Get formatted display value for price
+  getFormattedPrice(): string {
+    const price = this.calculatorForm.get('price')?.value;
+    return price ? this.formatNumberWithSpaces(price.toString()) : '';
+  }
 
   calculate(): void {
     if (this.calculatorForm.invalid) {
@@ -90,6 +145,16 @@ export class CalculatorComponent {
   getResultClass(): string {
     const currentResult = this.result();
     if (!currentResult) return '';
-    return currentResult.status;
+    
+    switch (currentResult.status) {
+      case 'error':
+        return 'bg-red-100 text-red-800 border border-red-200';
+      case 'warning':
+        return 'bg-yellow-100 text-yellow-800 border border-yellow-200';
+      case 'success':
+        return 'bg-green-100 text-green-800 border border-green-200';
+      default:
+        return '';
+    }
   }
 }
