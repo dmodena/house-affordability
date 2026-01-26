@@ -100,22 +100,22 @@ export class CalculatorComponent {
     const price = Number(formValues.price);
 
     setTimeout(() => {
+      const totalAge=0;
       const fee = salary * 0.3;
-      const months = Math.abs(Math.log(Math.abs(1 - (price * 0.00375 / fee))) / Math.log(1.00375));
-      const years = Math.floor(months / 12);
+      const months=price*1.045 /fee;
+      const years=months/12;
       const remainingMonths = Math.floor(months) - years * 12;
-      const totalAge = years + age;
 
       let status: 'error' | 'warning' | 'success';
       let message: string;
 
-      if (totalAge > 80) {
+      if (years > 80) {
         status = 'error';
         message = `According to your conditions, I don't think that purchase it shall be possible, mate. Maybe in ${years} years and ${remainingMonths} months.`;
-      } else if (totalAge > 50) {
+      } else if (years > 50) {
         status = 'warning';
         message = `According to your conditions, I think you could hardly buy that property. Maybe in ${years} years and ${remainingMonths} months.`;
-      } else if (totalAge > 30) {
+      } else if (years > 30) {
         status = 'success';
         message = `According to your conditions, I think you could purchase that property. Maybe in ${years} years and ${remainingMonths} months.`;
       } else {

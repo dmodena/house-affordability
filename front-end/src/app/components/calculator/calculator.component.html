@@ -30,28 +30,6 @@
         }
       </div>
 
-      <div class="mb-6">
-        <label for="age" class="block mb-2 text-sm font-bold text-gray-700">Age:</label>
-        <input 
-          type="number" 
-          id="age" 
-          formControlName="age"
-          class="w-full px-4 py-3 text-gray-700 bg-white border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors" 
-          placeholder="Enter your age"
-          aria-describedby="age-error"
-        />
-        @if (calculatorForm.get('age')?.touched && calculatorForm.get('age')?.invalid) {
-          <small id="age-error" class="block mt-1 text-sm text-red-600 font-medium">
-            @if (calculatorForm.get('age')?.hasError('required')) {
-              Age is required
-            } @else if (calculatorForm.get('age')?.hasError('min')) {
-              You must be at least 18 years old
-            } @else if (calculatorForm.get('age')?.hasError('max')) {
-              Age must be less than 100
-            }
-          </small>
-        }
-      </div>
 
       <div class="mb-6">
         <label for="price" class="block mb-2 text-sm font-bold text-gray-700">Cost of the property:</label>
