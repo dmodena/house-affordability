@@ -15,8 +15,8 @@
 }
 
 .map-container {
-  max-width: 800px;
   width: 100%;
+  max-width: none;
   text-align: center;
 }
 
@@ -38,6 +38,13 @@
   margin: 2rem 0;
   display: flex;
   justify-content: center;
+  width: 100%;
+  overflow-x: auto;
+}
+
+.map-visualization iframe {
+  max-width: none;
+  min-width: 100%;
 }
 
 .london-map {
