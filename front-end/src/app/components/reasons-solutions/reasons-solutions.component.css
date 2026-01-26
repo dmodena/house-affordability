@@ -1,0 +1,48 @@
+:host {
+  display: block;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.reasons-section {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.reasons-container {
+  max-width: 1400px;
+  width: 100%;
+  text-align: center;
+}
+
+.gif-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.gif-image {
+  max-width: 50%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e2e8f0;
+}
+
+@media (max-width: 768px) {
+  .gif-container {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .gif-image {
+    max-width: 50%;
+  }
+}

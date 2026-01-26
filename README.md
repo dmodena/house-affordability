@@ -69,6 +69,35 @@ We use a standard Git-based collaborative workflow:
 
 ## Getting Started
 
+### Docker Development (Recommended)
+
+This project includes Docker support for easy local development. The setup includes:
+
+- **Back-end**: FastAPI application running on `localhost:8000`
+- **Front-end**: Angular application running on `localhost:4200`
+
+#### Starting the Development Environment
+
+```bash
+docker compose up
+```
+
+This will start both services with live reloading enabled. Any changes you make to the source code will be automatically reflected.
+
+#### Stopping the Development Environment
+
+```bash
+docker compose down --volumes --remove-orphans --rmi all
+```
+
+This command will:
+- Stop and remove all containers
+- Remove all volumes
+- Remove all built images
+- Clean up any orphaned containers
+
+### Manual Setup
+
 1. Fork the project on GitHub
 2. Clone your fork locally
 3. Check out your assigned folder
