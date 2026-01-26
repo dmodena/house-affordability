@@ -1,30 +1,26 @@
-:root {
-  font-family:
-    "Inter",
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    Roboto,
-    sans-serif;
-  --color-bg: #fafafa;
-  --color-surface: #ffffff;
-  --color-primary: #2563eb;
-  --color-primary-hover: #1d4ed8;
-  --color-text: #0f172a;
-  --color-text-secondary: #64748b;
-  --color-border: #e2e8f0;
-  --color-border-hover: #cbd5e1;
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+
+
+/* Solo aplicar tema oscuro a esta sección específica */
+.income-chart-section {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  /* Tema oscuro */
+  --color-bg: #1a2332;
+  --color-surface: #23334a;
+  --color-primary: #3b82f6;
+  --color-primary-hover: #2563eb;
+  --color-text: #e2e8f0;
+  --color-text-secondary: #94a3b8;
+  --color-border: #334155;
+  --color-border-hover: #475569;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
   --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 14px;
-}
 
-.income-chart-section {
   margin: 0;
-  padding: 0;
+  padding: 60px 0;
   background: var(--color-bg);
   color: var(--color-text);
   line-height: 1.6;
@@ -86,7 +82,7 @@ input {
   padding: 11px 14px;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
-  background: var(--color-surface);
+  background: #1a2332;
   font-size: 15px;
   color: var(--color-text);
   transition: all 0.2s ease;
@@ -95,7 +91,8 @@ input {
 
 input:focus {
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  background: #23334a;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
 }
 
 input:hover:not(:focus) {
@@ -134,7 +131,7 @@ button.secondary {
 }
 
 button.secondary:hover {
-  background: var(--color-bg);
+  background: #2d3f56;
   border-color: var(--color-border-hover);
 }
 
@@ -171,7 +168,7 @@ button.secondary:hover {
 .insight {
   margin-top: 20px;
   padding: 20px;
-  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  background: linear-gradient(135deg, #2d3f56 0%, #23334a 100%);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
@@ -199,7 +196,7 @@ button.secondary:hover {
   font-weight: 600;
   color: var(--color-text);
   padding: 6px 12px;
-  background: var(--color-surface);
+  background: #1a2332;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
 }
