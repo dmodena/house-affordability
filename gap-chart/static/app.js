@@ -326,9 +326,9 @@ function renderChartWithForecast(title, history, forecast) {
 // -------------------------
 async function loadOverview() {
   const status = document.getElementById("status");
-  status.textContent = "Loading overview...";
+  status.textContent = "Loading London overview forecast...";
 
-  const res = await fetch("/api/overview");
+  const res = await fetch("/api/overview-forecast?years_ahead=6");
   if (!res.ok) {
     status.textContent = "Failed to load overview.";
     return;
@@ -337,14 +337,15 @@ async function loadOverview() {
   const data = await res.json();
   status.textContent = data.title;
 
+  // For insights, use the full-axis central forecast values
   currentSeries = {
     title: data.title,
-    years: data.years,
-    house_price: data.house_price,
-    annual_income: data.annual_income,
+    years: data.forecast.years,
+    house_price: data.forecast.house_price.yhat,
+    annual_income: data.forecast.annual_income.yhat,
   };
 
-  renderChart(data.title, data.years, data.house_price, data.annual_income);
+  renderChartWithForecast(data.title, data.history, data.forecast);
 }
 
 async function loadBorough() {

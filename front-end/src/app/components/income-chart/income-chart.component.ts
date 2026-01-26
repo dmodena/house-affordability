@@ -61,22 +61,25 @@ export class IncomeChartComponent implements AfterViewInit {
   }
 
   loadOverview(): void {
-    this.status.set('Loading overview...');
+    this.status.set('Loading London overview forecast...');
     
-    this.chartDataService.getOverview().subscribe({
+    this.chartDataService.getOverviewForecast(6).subscribe({
       next: (data) => {
-        this.status.set(data.title);
+        this.status.set(`Showing: ${data.title}`);
+        
+        // Use forecast data for insights (full axis with central predictions)
         this.currentSeries = {
           title: data.title,
-          years: data.years,
-          house_price: data.house_price,
-          annual_income: data.annual_income,
+          years: data.forecast.years,
+          house_price: data.forecast.house_price.yhat,
+          annual_income: data.forecast.annual_income.yhat,
         };
-        this.renderChart(data.title, data.years, data.house_price, data.annual_income);
+        
+        this.renderChartWithForecast(data.title, data.history, data.forecast);
       },
       error: (error) => {
-        console.error('Error loading overview:', error);
-        this.status.set('Failed to load overview.');
+        console.error('Error loading overview forecast:', error);
+        this.status.set('Failed to load overview forecast.');
       }
     });
   }

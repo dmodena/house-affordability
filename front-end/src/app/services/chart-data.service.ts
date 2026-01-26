@@ -53,6 +53,14 @@ export class ChartDataService {
     );
   }
 
+  getOverviewForecast(yearsAhead: number = 6): Observable<ForecastData> {
+    return this.http.get<ForecastData>(`${this.baseUrl}/api/overview-forecast`, {
+      params: { years_ahead: yearsAhead.toString() }
+    }).pipe(
+      catchError(this.handleError)
+    );
+  }
+
   getBoroughs(): Observable<{ boroughs: string[] }> {
     return this.http.get<{ boroughs: string[] }>(`${this.baseUrl}/api/boroughs`).pipe(
       catchError(this.handleError)
