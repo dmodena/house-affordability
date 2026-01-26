@@ -11,28 +11,41 @@
 
     <title>Calculator</title>
 </head>
-<body>
-    <div class="main">
-        <br>
-        <form method="post" action="">
-            <div class="mb-2">
-                <label for="salary" class="fw-bold">Monthly salary:</label>
-                <input type="number" name="salary" id="salary">
+<body class="bg-light">
+
+<div class="container min-vh-100 d-flex align-items-center justify-content-center">
+    <div class="card shadow-lg p-4 calculator-card">
+        <h3 class="text-center mb-4">🏠 Mortgage Calculator</h3>
+
+        <form>
+            <div class="mb-3">
+                <label for="salary" class="form-label fw-bold">Monthly salary</label>
+                <input type="number" class="form-control" id="salary">
             </div>
-            <div class="mb-2">
-                <label for="age" class="fw-bold">Age:</label>
-                <input type="number" name="age" id="age">
+
+            <div class="mb-3">
+                <label for="age" class="form-label fw-bold">Age</label>
+                <input type="number" class="form-control" id="age">
             </div>
-            <div class="mb-2">
-                <label for="price" class="fw-bold">Cost of the property:</label>
-                <input type="number" name="price" id="price">
+
+            <div class="mb-3">
+                <label for="price" class="form-label fw-bold">Property price</label>
+                <input type="number" class="form-control" id="price">
             </div>
-            <button type="button" onclick="calcular()" class="btn btn-success" id="calc_button">Calculate</button>
+
+            <div class="d-grid">
+                <button type="button" onclick="calcular()" class="btn btn-primary btn-lg">
+                    Calculate
+                </button>
+            </div>
         </form>
-        <br>
-        <small id="advice"></small><br>
-        <small id="calculating" class="fw-bold"></small><br>
-        <small id="result"></small>
+
+        <div class="mt-4 text-center">
+            <div id="calculating" class="fw-bold mb-2"></div>
+            <div id="result" class="result-box"></div>
+        </div>
     </div>
+</div>
+
 </body>
 </html>
