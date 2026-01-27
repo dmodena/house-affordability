@@ -5,6 +5,7 @@ import { IncomeChartComponent } from './components/income-chart/income-chart.com
 import { ReasonsSolutionsComponent } from './components/reasons-solutions/reasons-solutions.component';
 import { CalculatorComponent } from './components/calculator/calculator.component';
 import { SolutionsComponent } from './components/solutions/solutions.component';
+import { ChatbotComponent } from './components/chatbot/chatbot.component';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +15,8 @@ import { SolutionsComponent } from './components/solutions/solutions.component';
     IncomeChartComponent,
     ReasonsSolutionsComponent,
     CalculatorComponent,
-    SolutionsComponent
+    SolutionsComponent,
+    ChatbotComponent
   ],
   templateUrl: './app.html',
   styleUrl: './app.css'
