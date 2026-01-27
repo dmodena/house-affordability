@@ -1,6 +1,8 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { firstValueFrom } from 'rxjs';
 
 interface Message {
   text: string;
@@ -16,36 +18,53 @@ interface Message {
   styleUrl: './chatbot.component.css'
 })
 export class ChatbotComponent {
+  private http = inject(HttpClient);
+  
   isOpen = signal(false);
   messages = signal<Message[]>([
-    { text: 'Hello! How can I help you with housing affordability in London today?', sender: 'bot', time: new Date() }
+    { text: 'Hello! I am your Housing Assistant. Ask me about house prices, income trends, or affordability in London.', sender: 'bot', time: new Date() }
   ]);
   inputMessage = signal('');
+  isLoading = signal(false);
 
   toggleChat() {
     this.isOpen.set(!this.isOpen());
   }
 
-  sendMessage() {
-    if (!this.inputMessage().trim()) return;
+  async sendMessage() {
+    if (!this.inputMessage().trim() || this.isLoading()) return;
 
+    const userText = this.inputMessage();
+    
     // Add user message
     this.messages.update(msgs => [...msgs, {
-      text: this.inputMessage(),
+      text: userText,
       sender: 'user',
       time: new Date()
     }]);
 
-    const userText = this.inputMessage();
     this.inputMessage.set('');
+    this.isLoading.set(true);
 
-    // Simulate bot response (placeholder for now)
-    setTimeout(() => {
+    try {
+      const response = await firstValueFrom(
+        this.http.post<{response: string}>('http://localhost:8000/api/chat', { message: userText })
+      );
+
       this.messages.update(msgs => [...msgs, {
-        text: `I'm just a frontend demo for now. You said: "${userText}". The backend will be connected soon!`,
+        text: response.response,
         sender: 'bot',
         time: new Date()
       }]);
-    }, 1000);
+    } catch (error) {
+      console.error('Chat error:', error);
+      this.messages.update(msgs => [...msgs, {
+        text: "I'm sorry, I'm having trouble connecting to the server. Please try again later.",
+        sender: 'bot',
+        time: new Date()
+      }]);
+    } finally {
+      this.isLoading.set(false);
+    }
   }
 }

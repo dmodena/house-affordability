@@ -8,6 +8,9 @@ import pandas as pd
 from pathlib import Path
 from prophet import Prophet
 import numpy as np
+from pydantic import BaseModel
+from chatbot_service import ChatbotService
+from forecast_model import prep_prophet_df, fit_forecast_prophet
 
 app = FastAPI()
 
@@ -27,10 +30,10 @@ DATA_SHEET = "merged_annual_long"
 templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
 app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="static")
 
-# -------------------------
 # Load once
 # -------------------------
 df = pd.read_excel(DATA_FILE, sheet_name=DATA_SHEET)
+chatbot_service = ChatbotService()
 
 df["year"] = pd.to_numeric(df["year"], errors="coerce")
 df["Area"] = df["Area"].astype(str).str.strip()
@@ -94,11 +97,11 @@ def overview_forecast(years_ahead: int = Query(6, ge=1, le=20)):
     )
     
     # Prepare for Prophet
-    hp_ts = _prep_prophet_df(yearly, "house_price")
-    hp_fc = _fit_forecast_prophet(hp_ts, years_ahead=years_ahead)
+    hp_ts = prep_prophet_df(yearly, "house_price")
+    hp_fc = fit_forecast_prophet(hp_ts, years_ahead=years_ahead)
     
-    inc_ts = _prep_prophet_df(yearly, "annual_income")
-    inc_fc = _fit_forecast_prophet(inc_ts, years_ahead=years_ahead)
+    inc_ts = prep_prophet_df(yearly, "annual_income")
+    inc_fc = fit_forecast_prophet(inc_ts, years_ahead=years_ahead)
     
     # Convert ds -> year for frontend
     hp_fc["year"] = hp_fc["ds"].dt.year
@@ -173,55 +176,6 @@ def series(borough: str = Query(...)):
         "annual_income": d["annual_income"].round(0).tolist(),
     }
 
-#Prophet model 
-import numpy as np
-
-def _prep_prophet_df(d: pd.DataFrame, value_col: str) -> pd.DataFrame:
-    """Prepare data for Prophet with validation and outlier handling."""
-    out = d[["year", value_col]].copy()
-    out["ds"] = pd.to_datetime(out["year"].astype(str) + "-01-01")
-    out["y"] = pd.to_numeric(out[value_col], errors="coerce")
-    out = out.dropna(subset=["ds", "y"]).sort_values("ds")
-    
-    # Validate positive values for log transform
-    if (out["y"] <= 0).any():
-        raise HTTPException(status_code=400, detail="Cannot log-transform non-positive values")
-    
-    # Optional: Remove outliers using IQR method (commented out for now)
-    # q1, q3 = out["y"].quantile([0.25, 0.75])
-    # iqr = q3 - q1
-    # out = out[(out["y"] >= q1 - 1.5*iqr) & (out["y"] <= q3 + 1.5*iqr)]
-    
-    # Log transform for exponential growth modeling
-    out["y"] = np.log(out["y"])
-    return out[["ds", "y"]]
-
-
-def _fit_forecast_prophet(df_ts: pd.DataFrame, years_ahead: int = 6):
-    """Fit Prophet model with improved configuration for housing data."""
-    if len(df_ts) < 8:
-        raise HTTPException(status_code=400, detail="Not enough data points for forecasting")
-
-    m = Prophet(
-        yearly_seasonality=False,
-        weekly_seasonality=False,
-        daily_seasonality=False,
-        changepoint_prior_scale=0.25,  # More responsive to trend changes (improved from 0.1)
-        changepoint_range=0.9,  # Allow changepoints in 90% of history
-        interval_width=0.80
-    )
-    m.fit(df_ts)
-
-    # freq='YS' = Year Start (01-01)
-    future = m.make_future_dataframe(periods=years_ahead, freq="YS")
-    fc = m.predict(future)
-
-    # Convert back from log scale to original scale
-    fc["yhat"] = np.exp(fc["yhat"])
-    fc["yhat_lower"] = np.exp(fc["yhat_lower"])
-    fc["yhat_upper"] = np.exp(fc["yhat_upper"])
-
-    return fc[["ds", "yhat", "yhat_lower", "yhat_upper"]]
 
 @app.get("/api/forecast")
 def forecast(borough: str = Query(...), years_ahead: int = Query(6, ge=1, le=20)):
@@ -242,12 +196,12 @@ def forecast(borough: str = Query(...), years_ahead: int = Query(6, ge=1, le=20)
     d = df[df["Area"] == bname].sort_values("year").copy()
 
     # --- Precio ---
-    hp_ts = _prep_prophet_df(d, "house_price")
-    hp_fc = _fit_forecast_prophet(hp_ts, years_ahead=years_ahead)
+    hp_ts = prep_prophet_df(d, "house_price")
+    hp_fc = fit_forecast_prophet(hp_ts, years_ahead=years_ahead)
 
     # --- Income ---
-    inc_ts = _prep_prophet_df(d, "annual_income")
-    inc_fc = _fit_forecast_prophet(inc_ts, years_ahead=years_ahead)
+    inc_ts = prep_prophet_df(d, "annual_income")
+    inc_fc = fit_forecast_prophet(inc_ts, years_ahead=years_ahead)
 
     # Convertir ds -> year para el front
     hp_fc["year"] = hp_fc["ds"].dt.year
@@ -287,5 +241,14 @@ def forecast(borough: str = Query(...), years_ahead: int = Query(6, ge=1, le=20)
             "note": "Projections are trend-based (Prophet on log-scale). Not causal; uncertainty grows with horizon."
         }
     }
+
+
+class ChatRequest(BaseModel):
+    message: str
+
+@app.post("/api/chat")
+def chat(request: ChatRequest):
+    response = chatbot_service.get_response(request.message)
+    return {"response": response}
 
 
