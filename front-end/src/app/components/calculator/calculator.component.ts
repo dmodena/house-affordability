@@ -14,6 +14,7 @@ export interface CalculationResult {
   selector: 'app-calculator',
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './calculator.component.html',
+  styleUrl: './calculator.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CalculatorComponent {
@@ -146,11 +147,27 @@ export class CalculatorComponent {
     
     switch (currentResult.status) {
       case 'error':
-        return 'bg-red-100 text-red-800 border border-red-200';
+        return 'poor';
       case 'warning':
-        return 'bg-yellow-100 text-yellow-800 border border-yellow-200';
+        return 'moderate';
       case 'success':
-        return 'bg-green-100 text-green-800 border border-green-200';
+        return 'good';
+      default:
+        return '';
+    }
+  }
+
+  getResultBadge(): string {
+    const currentResult = this.result();
+    if (!currentResult) return '';
+    
+    switch (currentResult.status) {
+      case 'error':
+        return 'Challenging';
+      case 'warning':
+        return 'Moderate';
+      case 'success':
+        return 'Achievable';
       default:
         return '';
     }

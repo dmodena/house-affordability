@@ -1,18 +1,51 @@
 <section class="borough-map-section">
   <div class="map-container">
-    <h2 class="map-title">The Great Shift</h2>
-    <p class="map-subtitle">Watch how London's housing prices have transformed over three decades</p>
+    <div class="section-header">
+      <h2 class="section-title">London Property Market Evolution</h2>
+      <p class="section-subtitle">Three decades of transformation across London's boroughs</p>
+      <div class="section-badge">
+        <span class="badge-icon">📊</span>
+        <span class="badge-text">Interactive PowerBI Visualization</span>
+      </div>
+    </div>
     
     <div class="map-visualization">
-      <iframe 
-        title="test" 
-        width="1500" 
-        height="800" 
-        src="https://app.powerbi.com/reportEmbed?reportId=6168a062-28ae-47da-8520-4cbbbe468f8e&autoAuth=true&ctid=f07b40ae-b60b-4e0f-bebe-afb42fc4dc69" 
-        frameborder="0" 
-        allowFullScreen="true">
-      </iframe>
+      <div class="iframe-container">
+        <iframe 
+          title="London Borough Property Price Evolution" 
+          class="powerbi-iframe"
+          src="https://app.powerbi.com/reportEmbed?reportId=6168a062-28ae-47da-8520-4cbbbe468f8e&autoAuth=true&ctid=f07b40ae-b60b-4e0f-bebe-afb42fc4dc69" 
+          frameborder="0" 
+          allowFullScreen="true"
+          loading="lazy">
+        </iframe>
+      </div>
+      
+      <div class="map-insights">
+        <div class="insight-card">
+          <div class="insight-icon">📈</div>
+          <div class="insight-content">
+            <h4>Price Growth</h4>
+            <p>Track how property values have increased across different boroughs over the past 30 years</p>
+          </div>
+        </div>
+        
+        <div class="insight-card">
+          <div class="insight-icon">🗺️</div>
+          <div class="insight-content">
+            <h4>Geographic Patterns</h4>
+            <p>Identify emerging hotspots and areas with consistent growth patterns</p>
+          </div>
+        </div>
+        
+        <div class="insight-card">
+          <div class="insight-icon">💹</div>
+          <div class="insight-content">
+            <h4>Market Trends</h4>
+            <p>Understand the factors driving London's dynamic real estate market</p>
+          </div>
+        </div>
+      </div>
     </div>
-
-    </div>
+  </div>
 </section>
