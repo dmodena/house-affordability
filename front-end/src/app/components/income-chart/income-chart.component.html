@@ -1,39 +1,93 @@
 <section class="income-chart-section">
-  <div class="wrap">
-    <h1>House Price vs Income (Annual)</h1>
-
-    <div class="controls">
-      <label for="boroughInput">Borough</label>
-      <input
-        id="boroughInput"
-        list="boroughs"
-        placeholder="Start typing (e.g., Barnet)..."
-        [(ngModel)]="selectedBorough"
-        (keydown.enter)="loadBoroughData()"
-      />
-      <datalist id="boroughs">
-        @for (borough of availableBoroughs(); track borough) {
-          <option [value]="borough"></option>
-        }
-      </datalist>
-
-      <button (click)="loadBoroughData()">Load</button>
-      <span id="status">{{ status() }}</span>
+  <div class="chart-container">
+    <div class="section-header">
+      <h2 class="section-title">Income vs Property Price Analysis</h2>
+      <p class="section-subtitle">Compare housing affordability across London boroughs</p>
+      <div class="section-badge">
+        <span class="badge-icon">📊</span>
+        <span class="badge-text">Python-Powered Analytics</span>
+      </div>
     </div>
 
-    <div class="card">
-      <canvas #chart height="120"></canvas>
+    <div class="controls-section">
+      <div class="borough-selector">
+        <label for="boroughInput" class="selector-label">Select Borough</label>
+        <div class="input-group">
+          <input
+            id="boroughInput"
+            list="boroughs"
+            placeholder="Start typing (e.g., Barnet)..."
+            class="borough-input"
+            [(ngModel)]="selectedBorough"
+            (keydown.enter)="loadBoroughData()"
+          />
+          <datalist id="boroughs">
+            @for (borough of availableBoroughs(); track borough) {
+              <option [value]="borough"></option>
+            }
+          </datalist>
+          <button 
+            type="button"
+            class="load-button"
+            (click)="loadBoroughData()"
+            [disabled]="!selectedBorough()"
+          >
+            <span class="button-icon">🔍</span>
+            Load Data
+          </button>
+        </div>
+        <div class="status-message" role="status" aria-live="polite">{{ status() }}</div>
+      </div>
     </div>
 
-    <div class="insight">
-      <div><b>Selected years:</b> <span id="yearRange">{{ yearRangeDisplay() }}</span></div>
-      <div id="insightText">{{ insightText() }}</div>
-      <button id="resetRangeBtn" type="button" (click)="resetSelection()">Reset selection</button>
+    <div class="chart-visualization">
+      <div class="chart-card">
+        <canvas #chart height="120"></canvas>
+      </div>
+      
+      <div class="insights-panel">
+        <div class="insight-header">
+          <h3>Market Insights</h3>
+          <div class="insight-badge">
+            <span class="badge-dot"></span>
+            <span>Live Analysis</span>
+          </div>
+        </div>
+        
+        <div class="insight-content">
+          <div class="insight-row">
+            <span class="insight-label">Selected years:</span>
+            <span class="insight-value" id="yearRange">{{ yearRangeDisplay() }}</span>
+          </div>
+          <div class="insight-text" id="insightText">{{ insightText() }}</div>
+          <button 
+            id="resetRangeBtn" 
+            type="button" 
+            class="reset-button"
+            (click)="resetSelection()"
+          >
+            Reset Selection
+          </button>
+        </div>
+      </div>
     </div>
 
-    <p class="hint">
-      Two lines: <b>house price</b> and <b>annual income</b> for the selected
-      borough. (Different scales are expected—income is much smaller.)
-    </p>
+    <div class="chart-legend">
+      <div class="legend-item">
+        <div class="legend-color price-line"></div>
+        <span>Property Price</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color income-line"></div>
+        <span>Annual Income</span>
+      </div>
+    </div>
+
+    <div class="chart-hint">
+      <p>
+        <strong>Note:</strong> Different scales are expected—income values are significantly smaller than property prices.
+        This visualization highlights the growing affordability gap in London's housing market.
+      </p>
+    </div>
   </div>
 </section>
