@@ -1,4 +1,4 @@
-/* Global styles for London Housing Affordability Scrollytelling */
+/* Global styles for 2A London Housing Market Insights */
 
 /* Reset and base styles */
 * {
@@ -12,7 +12,7 @@ html, body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   line-height: 1.6;
   color: #e2e8f0;
-  background-color: #000000;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -34,7 +34,7 @@ section {
 }
 
 ::-webkit-scrollbar-track {
-  background: #18181b;
+  background: #1a1a2e;
 }
 
 ::-webkit-scrollbar-thumb {
