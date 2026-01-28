@@ -21,7 +21,6 @@ export class CalculatorComponent {
   
   calculatorForm = this.formBuilder.group({
     salary: ['', [Validators.required, Validators.min(0)]],
-    age: ['', [Validators.required, Validators.min(18), Validators.max(100)]],
     price: ['', [Validators.required, Validators.min(0)]]
   });
 
@@ -96,14 +95,13 @@ export class CalculatorComponent {
 
     const formValues = this.calculatorForm.value;
     const salary = Number(formValues.salary);
-    const age = Number(formValues.age);
     const price = Number(formValues.price);
 
     setTimeout(() => {
-      const totalAge=0;
+      const totalAge=40;
       const fee = salary * 0.3;
       const months=price*1.045 /fee;
-      const years=months/12;
+      const years=Math.floor(months/12);
       const remainingMonths = Math.floor(months) - years * 12;
 
       let status: 'error' | 'warning' | 'success';
