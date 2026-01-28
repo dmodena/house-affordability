@@ -1,4 +1,4 @@
-import { Component, signal, ChangeDetectionStrategy, computed, inject, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, signal, ChangeDetectionStrategy, computed, inject, AfterViewInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ChartDataService, ChartData, ForecastData } from '../../services/chart-data.service';
@@ -16,6 +16,7 @@ import Chart from 'chart.js/auto';
 })
 export class IncomeChartComponent implements AfterViewInit {
   private readonly chartDataService = inject(ChartDataService);
+  private readonly cdr = inject(ChangeDetectorRef);
   
   @ViewChild('chart') private chartCanvas!: ElementRef<HTMLCanvasElement>;
   
@@ -52,6 +53,7 @@ export class IncomeChartComponent implements AfterViewInit {
     this.chartDataService.getBoroughs().subscribe({
       next: (data) => {
         this.availableBoroughs.set(data.boroughs);
+        this.cdr.markForCheck();
       },
       error: (error) => {
         console.error('Error loading boroughs:', error);
@@ -76,6 +78,7 @@ export class IncomeChartComponent implements AfterViewInit {
         };
         
         this.renderChartWithForecast(data.title, data.history, data.forecast);
+        this.cdr.markForCheck();
       },
       error: (error) => {
         console.error('Error loading overview forecast:', error);
@@ -107,6 +110,7 @@ export class IncomeChartComponent implements AfterViewInit {
         };
         
         this.renderChartWithForecast(data.title, data.history, data.forecast);
+        this.cdr.markForCheck();
       },
       error: (error) => {
         console.error('Error loading borough data:', error);
@@ -178,6 +182,8 @@ export class IncomeChartComponent implements AfterViewInit {
           {
             label: 'House price',
             data: house,
+            borderColor: '#3b82f6',
+            backgroundColor: '#3b82f6',
             tension: 0.2,
             pointRadius: 3,
             pointHitRadius: 12, // easier to click
@@ -185,6 +191,8 @@ export class IncomeChartComponent implements AfterViewInit {
           {
             label: 'Annual income',
             data: income,
+            borderColor: '#22c55e',
+            backgroundColor: '#22c55e',
             tension: 0.2,
             pointRadius: 3,
             pointHitRadius: 12,
@@ -261,12 +269,12 @@ export class IncomeChartComponent implements AfterViewInit {
       return idx !== -1 ? history.annual_income[idx] : null;
     });
 
-    // Split: forecast dotted lines (only after last historical year)
+    // Split: forecast dotted lines. Start at lastHistYear to connect visually.
     const houseFc = labels.map((y: number, i: number) =>
-      y > lastHistYear ? forecast.house_price.yhat[i] : null,
+      y >= lastHistYear ? forecast.house_price.yhat[i] : null,
     );
     const incomeFc = labels.map((y: number, i: number) =>
-      y > lastHistYear ? forecast.annual_income.yhat[i] : null,
+      y >= lastHistYear ? forecast.annual_income.yhat[i] : null,
     );
 
     // Optional bands (upper/lower) for forecast only
@@ -292,40 +300,61 @@ export class IncomeChartComponent implements AfterViewInit {
           {
             label: 'House price (history)',
             data: houseHist,
+            borderColor: '#3b82f6',
+            backgroundColor: '#3b82f6',
+            borderWidth: 2,
+            fill: false,
             tension: 0.2,
             pointRadius: 3,
             pointHitRadius: 12,
+            spanGaps: true,
           },
           {
             label: 'Annual income (history)',
             data: incomeHist,
+            borderColor: '#22c55e',
+            backgroundColor: '#22c55e',
+            borderWidth: 2,
+            fill: false,
             tension: 0.2,
             pointRadius: 3,
             pointHitRadius: 12,
+            spanGaps: true,
           },
 
           // --- Forecast (dotted)
           {
             label: 'House price (forecast)',
             data: houseFc,
+            borderColor: '#3b82f6',
+            backgroundColor: '#3b82f6',
+            borderWidth: 2,
+            fill: false,
             tension: 0.2,
             pointRadius: 3,
             pointHitRadius: 12,
             borderDash: [6, 6],
+            spanGaps: true,
           },
           {
             label: 'Annual income (forecast)',
             data: incomeFc,
+            borderColor: '#22c55e',
+            backgroundColor: '#22c55e',
+            borderWidth: 2,
+            fill: false,
             tension: 0.2,
             pointRadius: 3,
             pointHitRadius: 12,
             borderDash: [6, 6],
+            spanGaps: true,
           },
 
           // --- Optional uncertainty bands
           {
             label: 'House forecast (upper)',
             data: houseUpper,
+            borderColor: 'rgba(59, 130, 246, 0.2)', // transparent blue
             tension: 0.2,
             pointRadius: 0,
             borderWidth: 0,
@@ -333,6 +362,8 @@ export class IncomeChartComponent implements AfterViewInit {
           {
             label: 'House forecast (lower)',
             data: houseLower,
+            borderColor: 'rgba(59, 130, 246, 0.2)',
+            backgroundColor: 'rgba(59, 130, 246, 0.2)', // fill color
             tension: 0.2,
             pointRadius: 0,
             borderWidth: 0,
@@ -341,6 +372,7 @@ export class IncomeChartComponent implements AfterViewInit {
           {
             label: 'Income forecast (upper)',
             data: incUpper,
+            borderColor: 'rgba(34, 197, 94, 0.2)', // transparent green
             tension: 0.2,
             pointRadius: 0,
             borderWidth: 0,
@@ -348,6 +380,8 @@ export class IncomeChartComponent implements AfterViewInit {
           {
             label: 'Income forecast (lower)',
             data: incLower,
+            borderColor: 'rgba(34, 197, 94, 0.2)',
+            backgroundColor: 'rgba(34, 197, 94, 0.2)', // fill color
             tension: 0.2,
             pointRadius: 0,
             borderWidth: 0,
