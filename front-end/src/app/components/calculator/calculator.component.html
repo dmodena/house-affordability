@@ -21,7 +21,7 @@
                   id="salary" 
                   formControlName="salary"
                   class="form-input"
-                  placeholder="Enter your monthly salary"
+                  placeholder="Monthly income"
                   aria-describedby="salary-error"
                   (input)="onSalaryInput($event)"
                   [value]="getFormattedSalary()"
@@ -47,7 +47,7 @@
                   id="price" 
                   formControlName="price"
                   class="form-input"
-                  placeholder="Enter property cost"
+                  placeholder="Property cost"
                   aria-describedby="price-error"
                   (input)="onPriceInput($event)"
                   [value]="getFormattedPrice()"
@@ -113,14 +113,6 @@
                     <div class="metric-label">Time to Purchase</div>
                   </div>
                 </div>
-                
-                <div class="metric-item">
-                  <div class="metric-icon">👤</div>
-                  <div class="metric-content">
-                    <div class="metric-value">{{ result.totalAge }} years old</div>
-                    <div class="metric-label">Age at Purchase</div>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
@@ -131,13 +123,13 @@
         <div class="info-card">
           <h4>How This Calculator Works</h4>
           <p>
-            This tool analyzes your current financial situation to estimate how long it will take to save for a property deposit in London's competitive market.
+            This tool analyzes your current financial situation to estimate how long it will take to save for a property deposit in London's competitive market - estimation only.
           </p>
           <ul class="info-list">
-            <li>Assumes 20% down payment requirement</li>
-            <li>Considers average savings rate of 15%</li>
+            <li>Assumes 30% max income for mortgage payments</li>
+            <li>Considers interest rate of 4.5%</li>
             <li>Accounts for London's property market trends</li>
-            <li>Provides realistic timeline expectations</li>
+            <li>More details can be provided in the chat</li>
           </ul>
         </div>
         
